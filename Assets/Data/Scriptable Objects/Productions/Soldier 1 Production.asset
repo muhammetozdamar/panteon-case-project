@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2b358c4326f444aa8a3ec652c62ac1, type: 3}
   m_Name: Soldier 1 Production
   m_EditorClassIdentifier: 
-  product: {fileID: 11400000, guid: 74edb4195bf9af445a971098010e4337, type: 2}
+  product: {fileID: 11400000, guid: efbb6e43f0bf8624ea1e6094645fbd62, type: 2}
   productionTime: 0
   cost: []

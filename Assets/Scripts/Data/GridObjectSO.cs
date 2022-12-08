@@ -2,10 +2,8 @@ using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Data
 {
-    public class GridObjectSO : ScriptableObject
+    public class GridObjectSO : BaseObjectSO
     {
-        [SerializeField] internal new string name = "Grid Object";
-        [SerializeField] internal Sprite icon = default;
         [SerializeField] internal Vector2Int dimension = default;
     }
 }

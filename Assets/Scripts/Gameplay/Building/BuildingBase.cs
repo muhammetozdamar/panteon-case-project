@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay
 {
-    public class BuildingBase : MonoBehaviour
+    public class BuildingBase : UnitBase
     {
-        [SerializeField] internal BuildingSO data;
         internal Vector2Int Dimension => data.dimension;
-        internal ProductionSO[] Productions => data.productions;
+        internal ProductionSO[] Productions => (data as BuildingSO).productions;
     }
 }

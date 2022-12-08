@@ -26,7 +26,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 currentProductionTimeLeft = Mathf.Clamp(currentProductionTimeLeft + Time.deltaTime, 0f, currentProductionTime);
                 if (currentProductionTimeLeft >= currentProductionTime)
                 {
-                    Debug.Log($"Producing {currentProduction.product.product.name}, progress {currentProductionTimeLeft / currentProductionTime}!");
+                    Debug.Log($"Producing {currentProduction.product.name}, progress {currentProductionTimeLeft / currentProductionTime}!");
                     Produce(currentProduction);
                     currentProductionTimeLeft = 0f;
                     currentProduction = null;
@@ -41,13 +41,13 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         }
         private void Produce(ProductionSO production)
         {
-            Debug.Log($"{production.product.product.name} is produced!");
+            Debug.Log($"{production.product.name} is produced!");
         }
         public void AddSoldierProduction(ProductionSO production)
         {
             if (productions == null) productions = new Queue<ProductionSO>();
             productions.Enqueue(production);
-            Debug.Log($"{production.product.product.name} added to the queue!");
+            Debug.Log($"{production.product.name} added to the queue!");
         }
     }
 }
