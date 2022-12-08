@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 231f9e14ed871a04c932a579bc570cf0, type: 3}
-  m_Name: Powerplant
+  m_Script: {fileID: 11500000, guid: c1e86998943cbef4e9d3e20581ca35ff, type: 3}
+  m_Name: Soldier 3 Product
   m_EditorClassIdentifier: 
-  name: Powerplant
-  icon: {fileID: 0}
-  dimension: {x: 2, y: 3}
-  maxHealth: 50
-  productions: []
+  product: {fileID: 11400000, guid: 07f9432e2dd946041bac05939c19ab0b, type: 2}

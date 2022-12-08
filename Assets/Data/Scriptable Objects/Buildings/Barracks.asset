@@ -15,4 +15,14 @@ MonoBehaviour:
   name: Barracks
   icon: {fileID: 0}
   dimension: {x: 4, y: 4}
-  health: 100
+  maxHealth: 100
+  productions:
+  - product: {fileID: 11400000, guid: 74edb4195bf9af445a971098010e4337, type: 2}
+    productionTime: 0
+    cost: []
+  - product: {fileID: 11400000, guid: 428fcdaa1c2506840b20bf8ca655f168, type: 2}
+    productionTime: 0
+    cost: []
+  - product: {fileID: 11400000, guid: e562db98ee68249458964a33ba0ae680, type: 2}
+    productionTime: 0
+    cost: []

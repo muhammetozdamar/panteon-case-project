@@ -4,6 +4,6 @@ namespace BaridaGames.PanteonCaseProject.Data
 {
     public class UnitSO : GridObjectSO
     {
-        [SerializeField] internal float health = 10;
+        [SerializeField] internal float maxHealth = 10;
     }
 }
