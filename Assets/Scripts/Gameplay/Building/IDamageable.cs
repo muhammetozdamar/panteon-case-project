@@ -1,5 +1,12 @@
-public interface IDamageable
+using System;
+
+namespace BaridaGames.PanteonCaseProject.Gameplay
 {
-    public bool OnDamage(float value);
-    public void OnDeath();
+    public interface IDamageable
+    {
+        public bool OnDamage(float value);
+        public void OnDeath();
+        public event EventHandler OnDamaged;
+        public event EventHandler OnDied;
+    }
 }

@@ -2,30 +2,57 @@ using System;
 using BaridaGames.PanteonCaseProject.Data;
 using UnityEngine;
 
-public abstract class UnitBase : MonoBehaviour, IDamageable
+namespace BaridaGames.PanteonCaseProject.Gameplay
 {
-    [SerializeField] internal UnitSO data;
-    internal float health;
+    public abstract class UnitBase : MonoBehaviour, IDamageable, IInteractable
+    {
+        [SerializeField] internal UnitSO data;
+        internal float health;
+        public virtual event EventHandler OnDamaged;
+        public virtual event EventHandler OnDied;
 
-    internal float Health => health;
-    private void Start()
-    {
-        health = data.maxHealth;
-    }
-    public bool OnDamage(float value)
-    {
-        health -= value;
-        if (health <= 0)
+        internal float Health => health;
+        internal virtual void Start()
         {
-            OnDeath();
-            return true;
+            health = data.maxHealth;
         }
-        return false;
-    }
+        public virtual bool OnDamage(float value)
+        {
+            health -= value;
+            OnDamagedEvent(new DamageableEventArgs { currentHealth = health, maxHealth = data.MaxHealth, damageAmount = value });
+            if (health <= 0)
+            {
+                OnDeath();
+                return true;
+            }
+            return false;
+        }
 
-    public void OnDeath()
-    {
-        Debug.Log($"{gameObject.name}({data.name}) died!");
-        Destroy(gameObject);
+
+        internal virtual void OnDamagedEvent(DamageableEventArgs e)
+        {
+            OnDamaged?.Invoke(this, e);
+        }
+
+        public virtual void OnDeath()
+        {
+            Debug.Log($"{gameObject.name}({data.name}) died!");
+            Destroy(gameObject);
+        }
+
+        public virtual void OnMouseDown()
+        {
+            InformationPanelController.Instance.SetCurrentUnit(this);
+        }
+
+        public virtual void OnMouseHold()
+        {
+            return;
+        }
+
+        public virtual void OnMouseUp()
+        {
+            return;
+        }
     }
 }

@@ -8,8 +8,9 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         private ProductionSO currentProduction = null;
         private float currentProductionTime = 0;
         private float currentProductionTimeLeft = 0;
-        private void Start()
+        internal override void Start()
         {
+            base.Start();
             if (Productions != null && Productions.Length > 0)
             {
                 currentProduction = Productions[0];
