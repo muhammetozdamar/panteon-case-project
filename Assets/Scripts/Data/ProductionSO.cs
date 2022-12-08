@@ -2,12 +2,11 @@ using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Data
 {
-    [System.Serializable]
-    public class Production
+    [CreateAssetMenu(fileName = "Production", menuName = "Panteon Games Case/Production", order = 0)]
+    public class ProductionSO : ScriptableObject
     {
         [SerializeField] internal ProductReferance product;
         [SerializeField] internal float productionTime;
         [SerializeField] internal ProductionCost[] cost;
     }
-
 }
