@@ -1,4 +1,5 @@
 using System;
+using BaridaGames.PanteonCaseProject.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         [SerializeField] private TextMeshProUGUI healthText = default;
         [SerializeField] private Image healthImage = default;
         [SerializeField] private GameObject productionsRoot = default;
+        [SerializeField] private RectTransform productionsContent = default;
+
         private IDamageable currentDamageable;
         private void Awake()
         {
@@ -39,7 +42,24 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
 
             if (unit is BuildingBase)
             {
+                int childCount = productionsContent.childCount;
+                for (int i = 0; i < childCount; i++)
+                {
+                    DestroyImmediate(productionsContent.GetChild(0).gameObject);
+                }
+
                 productionsRoot.SetActive(true);
+                BuildingBase building = unit as BuildingBase;
+                for (int i = 0; i < building.Productions.Length; i++)
+                {
+                    ProductionSO production = building.Productions[i];
+                    ProductUI productUI = ProductUIFactory.Instance.GetPrefab();
+                    productUI.SetProduct(production.product.Name, production.product.Icon, () => building.AddProductionToQueue(production));
+                }
+            }
+            else
+            {
+                productionsRoot.SetActive(false);
             }
 
             if (currentDamageable != null)
@@ -56,6 +76,11 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             if (currentDamageable != null)
             {
                 currentDamageable.OnDamaged -= UpdateInformation;
+            }
+            int childCount = productionsContent.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                DestroyImmediate(productionsContent.GetChild(0).gameObject);
             }
         }
     }

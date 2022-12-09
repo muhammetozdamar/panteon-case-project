@@ -32,7 +32,17 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 }
             }
         }
-        private void Produce(ProductionSO production)
+        public override bool CanProduce(ProductionSO production)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void AddProductionToQueue(ProductionSO production)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void Produce(ProductionSO production)
         {
             Debug.Log($"{production.product.Name} is produced!");
         }

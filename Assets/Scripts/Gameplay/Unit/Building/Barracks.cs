@@ -32,17 +32,17 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 }
             }
         }
-        public bool CanProduce(ProductionSO production)
+        public override bool CanProduce(ProductionSO production)
         {
             if (production.cost.Length == 0) return true;
             // Can add check for costs later.
             return false;
         }
-        private void Produce(ProductionSO production)
+        protected override void Produce(ProductionSO production)
         {
             Debug.Log($"{production.product.name} is produced!");
         }
-        public void AddSoldierProduction(ProductionSO production)
+        public override void AddProductionToQueue(ProductionSO production)
         {
             if (productions == null) productions = new Queue<ProductionSO>();
             productions.Enqueue(production);

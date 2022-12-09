@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay
 {
@@ -10,6 +11,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
 
         private void Update()
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, interactableLayerMask);
