@@ -8,6 +8,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         [SerializeField] private Camera cam;
         [SerializeField] private LayerMask interactableLayerMask;
         private IInteractable currentInteractable;
+        private Vector3 lastMousePosition;
 
         private void Update()
         {
@@ -22,9 +23,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 }
                 else
                 {
-                    // Clicked on ground, reset UI
                     currentInteractable = null;
-                    InformationPanelController.Instance.ResetPanel();
                 }
             }
             else if (Input.GetMouseButton(0))
@@ -36,6 +35,8 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 else
                 {
                     // Drag camera
+                    Vector2 delta = lastMousePosition - Input.mousePosition;
+                    cam.transform.Translate(delta.normalized * Time.deltaTime * 32f, Space.World);
                 }
             }
             else if (Input.GetMouseButtonUp(0))
@@ -45,6 +46,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                     currentInteractable.OnMouseUp();
                 }
             }
+            lastMousePosition = Input.mousePosition;
         }
     }
 }
