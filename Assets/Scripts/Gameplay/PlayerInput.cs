@@ -5,8 +5,9 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
 {
     public class PlayerInput : MonoBehaviour
     {
-        [SerializeField] private Camera cam;
         [SerializeField] private LayerMask interactableLayerMask;
+        [SerializeField] private Camera cam;
+        [SerializeField] private CameraController camController;
         private IInteractable currentInteractable;
         private Vector3 lastMousePosition;
 
@@ -34,9 +35,8 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 }
                 else
                 {
-                    // Drag camera
                     Vector2 delta = lastMousePosition - Input.mousePosition;
-                    cam.transform.Translate(delta.normalized * Time.deltaTime * 32f, Space.World);
+                    camController.Move(delta.normalized);
                 }
             }
             else if (Input.GetMouseButtonUp(0))
