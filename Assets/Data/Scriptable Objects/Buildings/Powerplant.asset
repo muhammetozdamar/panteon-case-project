@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Powerplant
   icon: {fileID: 0}
-  dimension: {x: 2, y: 3}
+  bounds:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 2
+    height: 3
   maxHealth: 50
   productions: []

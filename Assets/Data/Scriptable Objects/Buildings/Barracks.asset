@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Barracks
   icon: {fileID: 0}
-  dimension: {x: 4, y: 4}
+  bounds:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 4
+    height: 4
   maxHealth: 100
   productions:
   - {fileID: 11400000, guid: 56dcf5061c5838e47b49efaeeab1ac43, type: 2}

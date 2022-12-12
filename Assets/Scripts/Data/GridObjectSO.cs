@@ -4,6 +4,6 @@ namespace BaridaGames.PanteonCaseProject.Data
 {
     public class GridObjectSO : BaseObjectSO
     {
-        [SerializeField] internal Vector2Int dimension = default;
+        [SerializeField] internal Rect bounds = default;
     }
 }

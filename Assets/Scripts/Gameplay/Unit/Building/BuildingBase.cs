@@ -5,7 +5,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
 {
     public abstract class BuildingBase : UnitBase
     {
-        internal Vector2Int Dimension => data.dimension;
+        internal Rect Bounds => data.bounds;
         internal ProductionSO[] Productions => (data as BuildingSO).productions;
 
         public abstract bool CanProduce(ProductionSO production);

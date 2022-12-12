@@ -27,24 +27,33 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             {
                 for (int y = 0; y < height; y++)
                 {
-                    tiles[x, y] = new GridTile(x, y, GetTileWorldPosition(x, y));
+                    tiles[x, y] = new GridTile(x, y, GetWorldPositionFromGridPosition(x, y));
                 }
             }
         }
 
-        internal Vector2 GetTileWorldPosition(int x, int y)
+        internal Vector2 GetWorldPositionFromGridPosition(int x, int y)
         {
             return (bottomLeft + Vector2.right * (x * tileFullSize + tileHalfSize) + Vector2.up * (y * tileFullSize + tileHalfSize));
         }
 
-        internal GridTile GetNodeWorldPosition(Vector2 worldPosition)
+        internal GridTile GetTileFromWorldPosition(Vector2 worldPosition)
         {
-            float percentX = (worldPosition.x + bounds.center.x) / bounds.xMax;
-            float percentY = (worldPosition.y + bounds.center.y) / bounds.yMax;
+            float gridSizeX = bounds.xMax - bounds.xMin;
+            float gridSizeY = bounds.yMax - bounds.yMin;
+
+            float percentX = (worldPosition.x + gridSizeX / 2) / gridSizeX;
+            float percentY = (worldPosition.y + gridSizeY / 2) / gridSizeY;
             percentX = Mathf.Clamp01(percentX);
             percentY = Mathf.Clamp01(percentY);
-            int x = Mathf.RoundToInt((bounds.xMax - 1) * percentX);
-            int y = Mathf.RoundToInt((bounds.yMax - 1) * percentY);
+
+            Debug.Log($"Pos: {worldPosition}");
+            Debug.Log($"X Range: {(bounds.xMax - bounds.xMin)}");
+            Debug.Log($"Y Range: {(bounds.yMax - bounds.yMin)}");
+            Debug.Log($"PercentX: {percentX}");
+            Debug.Log($"PercentY: {percentY}");
+            int x = Mathf.RoundToInt((width - 1) * percentX);
+            int y = Mathf.RoundToInt((height - 1) * percentY);
             return tiles[x, y];
         }
     }

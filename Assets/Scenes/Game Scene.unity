@@ -1034,6 +1034,9 @@ MonoBehaviour:
     height: 100
   tileHalfSize: 0.5
   ground: {fileID: 2142791709}
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &764824051
 Transform:
   m_ObjectHideFlags: 0
