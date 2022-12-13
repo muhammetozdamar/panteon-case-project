@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Powerplant
   m_EditorClassIdentifier: 
   name: Powerplant
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: b900cfa22a288cb45bad85cf89a3ea19, type: 3}
   bounds:
-    serializedVersion: 2
     x: 0
     y: 0
     width: 2
     height: 3
   maxHealth: 50
   productions: []
+  gfx: {fileID: 21300000, guid: b900cfa22a288cb45bad85cf89a3ea19, type: 3}

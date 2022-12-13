@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Barracks
   m_EditorClassIdentifier: 
   name: Barracks
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f173496f76896c240ba2eff2a3777e5e, type: 3}
   bounds:
     x: 0
     y: 0
@@ -24,3 +24,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56dcf5061c5838e47b49efaeeab1ac43, type: 2}
   - {fileID: 11400000, guid: 2252b00117da951438935b952f8fe56d, type: 2}
   - {fileID: 11400000, guid: 64bc76c2bb124a342ad3fa08e82e2632, type: 2}
+  gfx: {fileID: 21300000, guid: f173496f76896c240ba2eff2a3777e5e, type: 3}
