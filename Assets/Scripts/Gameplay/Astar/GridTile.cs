@@ -20,5 +20,10 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             this.worldPosition = worldPosition;
             this.isOccupied = isOccupied;
         }
+
+        public override string ToString()
+        {
+            return $"[{xPosition},{yPosition} - {worldPosition} - {isOccupied}]";
+        }
     }
 }

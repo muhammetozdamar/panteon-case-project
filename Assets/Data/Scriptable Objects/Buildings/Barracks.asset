@@ -15,7 +15,6 @@ MonoBehaviour:
   name: Barracks
   icon: {fileID: 0}
   bounds:
-    serializedVersion: 2
     x: 0
     y: 0
     width: 4

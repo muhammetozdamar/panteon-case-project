@@ -39,19 +39,10 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
 
         internal GridTile GetTileFromWorldPosition(Vector2 worldPosition)
         {
-            float gridSizeX = bounds.xMax - bounds.xMin;
-            float gridSizeY = bounds.yMax - bounds.yMin;
-
-            float percentX = (worldPosition.x + gridSizeX / 2) / gridSizeX;
-            float percentY = (worldPosition.y + gridSizeY / 2) / gridSizeY;
+            float percentX = (worldPosition.x + bounds.width / 2) / bounds.width;
+            float percentY = (worldPosition.y + bounds.height / 2) / bounds.height;
             percentX = Mathf.Clamp01(percentX);
             percentY = Mathf.Clamp01(percentY);
-
-            Debug.Log($"Pos: {worldPosition}");
-            Debug.Log($"X Range: {(bounds.xMax - bounds.xMin)}");
-            Debug.Log($"Y Range: {(bounds.yMax - bounds.yMin)}");
-            Debug.Log($"PercentX: {percentX}");
-            Debug.Log($"PercentY: {percentY}");
             int x = Mathf.RoundToInt((width - 1) * percentX);
             int y = Mathf.RoundToInt((height - 1) * percentY);
             return tiles[x, y];

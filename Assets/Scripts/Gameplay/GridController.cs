@@ -19,7 +19,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             ground.transform.localPosition = bounds.center;
             ground.GetComponent<BoxCollider2D>().size = bounds.size;
         }
-        Rect rect4x4 = new Rect(0, 0, 4, 4);
+        RectInt rect4x4 = new RectInt(-2, -2, 4, 4);
         private void Update()
         {
             if (Input.GetMouseButtonDown(0))
@@ -28,43 +28,35 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, groundLayerMask);
                 if (hit.transform != null)
                 {
-                    print(hit.point);
-                    PlaceObject(hit.point, rect4x4);
+                    if (CanPlaceObject(hit.point, rect4x4))
+                    {
+                        PlaceObject(hit.point, rect4x4);
+                        print("Placed!");
+                    }
+                    else
+                    {
+                        print("Can't place!");
+                    }
                 }
             }
 
         }
 
-        internal bool CanPlaceObject(Vector2 position, Rect objBounds)
+        internal bool CanPlaceObject(Vector2 position, RectInt objBounds)
         {
-            Rect temp = objBounds;
-            temp.center += position;
-
-            if (!bounds.Overlaps(temp, false)) return false;
-
-            for (int x = 0; x < objBounds.width; x++)
+            GridTile clickedTile = grid.GetTileFromWorldPosition(position);
+            foreach (var pos in objBounds.allPositionsWithin)
             {
-                for (int y = 0; y < objBounds.height; y++)
-                {
-                    GridTile tile = grid.GetTileFromWorldPosition(position);
-                    if (tile.isOccupied) return false;
-                }
+                if (grid.GetTileFromWorldPosition(position + pos).isOccupied) return false;
             }
             return true;
         }
 
-        internal void PlaceObject(Vector2 position, Rect objBounds)
+        internal void PlaceObject(Vector2 position, RectInt objBounds)
         {
-            for (int x = 0; x < objBounds.width; x++)
+            foreach (var pos in objBounds.allPositionsWithin)
             {
-                for (int y = 0; y < objBounds.height; y++)
-                {
-                    Vector2 relativePosition =
-                        position;
-                    GridTile tile = grid.GetTileFromWorldPosition(relativePosition);
-                    tile.isOccupied = true;
-                    print($"{tile.xPosition}:{tile.yPosition} - {tile.worldPosition}");
-                }
+                grid.GetTileFromWorldPosition(position + pos).isOccupied = true;
             }
         }
 
