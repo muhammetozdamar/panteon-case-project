@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
@@ -44,13 +45,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             return (bottomLeft + Vector2.right * (x * tileFullSize + tileHalfSize) + Vector2.up * (y * tileFullSize + tileHalfSize));
         }
 
-        internal Vector2 ConvertToGridPosition(Vector2 worldPosition)
-        {
-            //return new Vector2(RoundToNearestGrid(worldPosition.x), RoundToNearestGrid(worldPosition.y));
-            return GetTileFromWorldPosition(worldPosition).worldPosition;
-        }
-
-        internal GridTile GetTileFromWorldPosition(Vector2 worldPosition)
+        private (int x, int y) GetGridPositionFromWorldPosition(Vector2 worldPosition)
         {
             float percentX = (worldPosition.x + worldSize.x / 2) / worldSize.x;
             float percentY = (worldPosition.y + worldSize.y / 2) / worldSize.y;
@@ -59,18 +54,75 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
 
             int x = Mathf.RoundToInt((width - 1) * percentX);
             int y = Mathf.RoundToInt((height - 1) * percentY);
+            return (x, y);
+        }
+
+        internal GridTile GetTileFromWorldPosition(Vector2 worldPosition)
+        {
+            (int x, int y) = GetGridPositionFromWorldPosition(worldPosition);
             return tiles[x, y];
         }
 
-        private float RoundToNearestGrid(float pos)
+        internal Vector2 GetRoundedPosition(Vector2 worldPosition)
         {
-            float diff = pos % tileFullSize;
-            pos -= diff;
-            if (diff > (tileHalfSize))
+            (int x, int y) = GetGridPositionFromWorldPosition(worldPosition);
+            return GetWorldPositionFromGridPosition(x, y);
+        }
+
+        internal GridTile FindClosestAvailableTile(Vector2 worldPosition)
+        {
+            GridTile tile = GetTileFromWorldPosition(worldPosition);
+            return FindClosestAvailableTile(tile);
+        }
+
+        internal GridTile FindClosestAvailableTile(GridTile tile)
+        {
+            if (!tile.isOccupied) return tile;
+            List<GridTile> neighbours = GetNeighbours(tile);
+            foreach (var neighour in neighbours)
             {
-                pos += tileFullSize;
+                if (!neighour.isOccupied) return neighour;
             }
-            return pos;
+            foreach (var neighour in neighbours)
+            {
+                if (!neighour.isOccupied) return neighour;
+            }
+            
+            return null;
+        }
+
+        internal List<GridTile> GetNeighbours(GridTile tile)
+        {
+            List<GridTile> neighbours = new List<GridTile>();
+
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    if (x == 0 && y == 0)
+                        continue;
+
+                    int checkX = tile.xPosition + x;
+                    int checkY = tile.yPosition + y;
+
+                    if (checkX >= 0 && checkX < width && checkY >= 0 && checkY < height)
+                    {
+                        neighbours.Add(tiles[checkX, checkY]);
+                    }
+                }
+            }
+
+            return neighbours;
+        }
+
+        internal int GetDistance(GridTile nodeA, GridTile nodeB)
+        {
+            int dstX = Mathf.Abs(nodeA.xPosition - nodeB.xPosition);
+            int dstY = Mathf.Abs(nodeA.yPosition - nodeB.yPosition);
+
+            if (dstX > dstY)
+                return 14 * dstY + 10 * (dstX - dstY);
+            return 14 * dstX + 10 * (dstY - dstX);
         }
     }
 }

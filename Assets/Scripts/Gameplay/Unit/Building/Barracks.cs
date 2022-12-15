@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BaridaGames.PanteonCaseProject.Data;
+using BaridaGames.PanteonCaseProject.Gameplay.Astar;
 using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay
@@ -50,7 +51,8 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         }
         protected override void Produce(ProductionSO production)
         {
-            SoldierBase soldier = Instantiate(soldierDb[production], spawnPoint.position, Quaternion.identity);
+            Vector2 availablePos = GridController.Instance.GetClosestAvailablePoint(spawnPoint.position);
+            SoldierBase soldier = Instantiate(soldierDb[production], availablePos, Quaternion.identity);
         }
         public override void AddProductionToQueue(ProductionSO production)
         {

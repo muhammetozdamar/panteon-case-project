@@ -1,24 +1,38 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
 {
     public class GridController : MonoBehaviour
     {
-        //[SerializeField] private Rect bounds = new Rect(Vector2.zero, Vector2.one * 100f);
+        public static GridController Instance;
         [SerializeField] private Vector2 bounds;
         [SerializeField] private float tileHalfSize = 0.5f;
         [SerializeField] private SpriteRenderer ground = default;
         private Grid grid;
+        private Pathfinder pathfinder;
         private void Awake()
         {
+            Instance = this;
             grid = new Grid(bounds, tileHalfSize);
+            pathfinder = new Pathfinder(grid);
             ground.size = bounds;
             ground.transform.localPosition = Vector3.zero;
             ground.GetComponent<BoxCollider2D>().size = bounds;
         }
         internal Vector2 ConvertToGridPosition(Vector2 worldPosition)
         {
-            return grid.ConvertToGridPosition(worldPosition);
+            return grid.GetRoundedPosition(worldPosition);
+        }
+
+        internal Vector2 GetClosestAvailablePoint(Vector2 worldPosition)
+        {
+            return grid.FindClosestAvailableTile(worldPosition).worldPosition;
+        }
+
+        internal GridTile GetTile(Vector2 worldPosition)
+        {
+            return grid.GetTileFromWorldPosition(worldPosition);
         }
 
         internal bool CanPlaceObject(Vector2 position, RectInt objBounds)
@@ -37,9 +51,23 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             foreach (var pos in objBounds.allPositionsWithin)
             {
                 GridTile tile = grid.GetTileFromWorldPosition(position + pos);
-                Vector2 rounded = ConvertToGridPosition(position + pos);
+                print(tile.ToString());
                 tile.isOccupied = true;
             }
+        }
+
+        internal void RemoveObject(Vector2 position, RectInt objBounds)
+        {
+            foreach (var pos in objBounds.allPositionsWithin)
+            {
+                GridTile tile = grid.GetTileFromWorldPosition(position + pos);
+                tile.isOccupied = false;
+            }
+        }
+
+        internal List<GridTile> GetPath(Vector2 startPosition, Vector2 endPosition)
+        {
+            return pathfinder.GetPath(startPosition, endPosition);
         }
 
         private void OnDrawGizmosSelected()

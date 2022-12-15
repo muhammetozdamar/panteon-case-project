@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: Soldier 2
   m_EditorClassIdentifier: 
   name: Soldier 2
-  icon: {fileID: 0}
-  dimension: {x: 1, y: 1}
-  health: 10
+  icon: {fileID: 21300000, guid: b6a6f8816fd78d542ae2a0c9c1859459, type: 3}
+  bounds:
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  gfx: {fileID: 21300000, guid: b6a6f8816fd78d542ae2a0c9c1859459, type: 3}
+  maxHealth: 10
   damage: 5
+  moveSpeed: 10
