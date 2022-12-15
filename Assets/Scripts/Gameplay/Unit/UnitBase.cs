@@ -8,6 +8,8 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
     public abstract class UnitBase : MonoBehaviour, IDamageable, IInteractable
     {
         [SerializeField] internal UnitSO data;
+        internal RectInt Bounds => data.bounds;
+
         internal float health;
         public virtual event EventHandler OnDamaged;
         public virtual event EventHandler OnDied;

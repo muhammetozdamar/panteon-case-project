@@ -6,6 +6,5 @@ namespace BaridaGames.PanteonCaseProject.Data
     public class BuildingSO : UnitSO
     {
         [SerializeField] internal ProductionSO[] productions;
-        [SerializeField] internal Sprite gfx;
     }
 }

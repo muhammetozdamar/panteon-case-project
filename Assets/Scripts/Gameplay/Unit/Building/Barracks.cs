@@ -7,16 +7,26 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
     public class Barracks : BuildingBase
     {
         [SerializeField] private Transform spawnPoint;
-        private Queue<ProductionSO> productions;
+        [SerializeField] private List<SoldierBase> soldiers;
+        private Queue<ProductionSO> productionQueue;
         private ProductionSO currentProduction;
         private float currentProductionTime;
         private float currentProductionTimeLeft;
+        private Dictionary<ProductionSO, SoldierBase> soldierDb;
+        private void Awake()
+        {
+            soldierDb = new Dictionary<ProductionSO, SoldierBase>();
+            foreach (ProductionSO production in Productions)
+            {
+                soldierDb.Add(production, soldiers.Find((soldier) => soldier.data == (production.product as SoldierSO)));
+            }
+        }
 
         private void Update()
         {
-            if (currentProduction == null && productions != null && productions.Count > 0)
+            if (currentProduction == null && productionQueue != null && productionQueue.Count > 0)
             {
-                currentProduction = productions.Dequeue();
+                currentProduction = productionQueue.Dequeue();
                 currentProductionTime = currentProduction.productionTime;
             }
 
@@ -40,12 +50,12 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         }
         protected override void Produce(ProductionSO production)
         {
-            Debug.Log($"{production.product.name} is produced!");
+            SoldierBase soldier = Instantiate(soldierDb[production], spawnPoint.position, Quaternion.identity);
         }
         public override void AddProductionToQueue(ProductionSO production)
         {
-            if (productions == null) productions = new Queue<ProductionSO>();
-            productions.Enqueue(production);
+            if (productionQueue == null) productionQueue = new Queue<ProductionSO>();
+            productionQueue.Enqueue(production);
             Debug.Log($"{production.product.name} added to the queue!");
         }
     }

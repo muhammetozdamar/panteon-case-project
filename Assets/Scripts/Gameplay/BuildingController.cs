@@ -35,7 +35,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         public void SelectBuilding(BuildingBase building)
         {
             currentBuilding = building;
-            preview.sprite = building.Gfx;
+            preview.sprite = building.data.Gfx;
             preview.gameObject.SetActive(true);
         }
     }
