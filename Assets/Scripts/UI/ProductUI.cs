@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BaridaGames.PanteonCaseProject.Gameplay
+namespace BaridaGames.PanteonCaseProject.Gameplay.UI
 {
     public class ProductUI : MonoBehaviour
     {

@@ -9,12 +9,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         [SerializeField] private GridController gridController;
         [SerializeField] private SpriteRenderer preview;
         [SerializeField] private LayerMask groundLayerMask = default;
-        [SerializeField] private BuildingBase DEBUG_SELECTED_BUILDING;
         private BuildingBase currentBuilding;
-        private void Start()
-        {
-            SelectBuilding(DEBUG_SELECTED_BUILDING);
-        }
         private void Update()
         {
             if (currentBuilding == null) return;
@@ -33,7 +28,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                     Instantiate(currentBuilding, preview.transform.position, Quaternion.identity);
                     currentBuilding = null;
                     preview.gameObject.SetActive(false);
-                    SelectBuilding(DEBUG_SELECTED_BUILDING);
                 }
             }
         }

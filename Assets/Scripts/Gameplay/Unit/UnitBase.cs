@@ -1,5 +1,6 @@
 using System;
 using BaridaGames.PanteonCaseProject.Data;
+using BaridaGames.PanteonCaseProject.Gameplay.UI;
 using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay
