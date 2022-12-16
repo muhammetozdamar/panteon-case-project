@@ -69,27 +69,38 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             return GetWorldPositionFromGridPosition(x, y);
         }
 
-        internal GridTile FindClosestAvailableTile(Vector2 worldPosition)
+        public GridTile FindClosestAvailableTile(Vector2 worldPosition)
         {
-            GridTile tile = GetTileFromWorldPosition(worldPosition);
-            return FindClosestAvailableTile(tile);
+            return FindClosestAvailableTile(GetTileFromWorldPosition(worldPosition));
         }
 
         internal GridTile FindClosestAvailableTile(GridTile tile)
         {
-            if (!tile.isOccupied) return tile;
-            List<GridTile> neighbours = GetNeighbours(tile);
-            foreach (var neighour in neighbours)
+            Queue<GridTile> queue = new Queue<GridTile>();
+            HashSet<GridTile> visited = new HashSet<GridTile>();
+            queue.Enqueue(tile);
+            visited.Add(tile);
+
+            while (queue.Count > 0)
             {
-                if (!neighour.isOccupied) return neighour;
+                GridTile current = queue.Dequeue();
+                if (!current.isOccupied)
+                {
+                    return current;
+                }
+                foreach (GridTile neighbour in GetNeighbours(current))
+                {
+                    if (!visited.Contains(neighbour))
+                    {
+                        queue.Enqueue(neighbour);
+                        visited.Add(neighbour);
+                    }
+                }
             }
-            foreach (var neighour in neighbours)
-            {
-                if (!neighour.isOccupied) return neighour;
-            }
-            
             return null;
         }
+
+
 
         internal List<GridTile> GetNeighbours(GridTile tile)
         {
