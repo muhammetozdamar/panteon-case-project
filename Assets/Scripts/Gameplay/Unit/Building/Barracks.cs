@@ -53,6 +53,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         {
             Vector2 availablePos = GridController.Instance.GetClosestAvailablePoint(spawnPoint.position);
             SoldierBase soldier = Instantiate(soldierDb[production], availablePos, Quaternion.identity);
+            soldier.Move(availablePos);
         }
         public override void AddProductionToQueue(ProductionSO production)
         {

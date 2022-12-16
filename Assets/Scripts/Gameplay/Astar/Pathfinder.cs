@@ -5,16 +5,29 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
 {
     public class Pathfinder
     {
+        public enum PathfinderFallback
+        {
+            FindClosestAvailableTile = 0,
+            ReturnNullPath = 1,
+        }
         private Grid grid;
         public Pathfinder(Grid grid)
         {
             this.grid = grid;
         }
 
-        public List<GridTile> GetPath(Vector2 startPosition, Vector2 endPosition)
+        public List<GridTile> GetPath(Vector2 startPosition, Vector2 endPosition, PathfinderFallback fallback = PathfinderFallback.FindClosestAvailableTile)
         {
             GridTile startTile = grid.GetTileFromWorldPosition(startPosition);
             GridTile endTile = grid.GetTileFromWorldPosition(endPosition);
+            if (startTile == endTile) return null;
+            if (endTile.isOccupied)
+            {
+                if (fallback == PathfinderFallback.FindClosestAvailableTile)
+                    endTile = grid.FindClosestAvailableTile(endTile);
+                else if (fallback == PathfinderFallback.ReturnNullPath)
+                    return null;
+            }
 
             List<GridTile> openSet = new List<GridTile>();
             HashSet<GridTile> closedSet = new HashSet<GridTile>();

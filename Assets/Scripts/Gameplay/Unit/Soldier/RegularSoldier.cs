@@ -12,8 +12,8 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         internal override void Start()
         {
             base.Start();
-            GridController.Instance.PlaceObject(transform.position, Bounds);
-
+            currentTile = GridController.Instance.GetTile(transform.position);
+            currentTile.isOccupied = true;
         }
         public override void Attack(UnitBase targetUnit)
         {
@@ -34,23 +34,41 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         public override void Move(Vector2 targetPosition)
         {
             List<GridTile> path = GridController.Instance.GetPath(transform.position, targetPosition);
+            if (moveCoroutine != null)
+            {
+                StopCoroutine(moveCoroutine);
+            }
             if (path == null) return;
-            if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+            currentTile.isOccupied = false;
             moveCoroutine = StartCoroutine(TracePath(path));
-
             IEnumerator TracePath(List<GridTile> path)
             {
                 int pathIndex = 0;
                 do
                 {
-                    Vector2 targetPosition = path[pathIndex].worldPosition;
-                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, MoveSpeed * Time.deltaTime);
+                    currentTile = path[pathIndex];
+                    currentTile.isOccupied = true;
+                    Vector2 targetPosition = currentTile.worldPosition;
                     if (((Vector2)transform.position - targetPosition).sqrMagnitude <= float.Epsilon)
                     {
-                        pathIndex++;
+                        if (pathIndex < path.Count - 1)
+                        {
+                            currentTile.isOccupied = false;
+                            pathIndex++;
+                            currentTile = path[pathIndex];
+                            currentTile.isOccupied = true;
+                        }
+                        else
+                        {
+                            pathIndex++;
+                        }
+                    }
+                    else
+                    {
+                        transform.position = Vector3.MoveTowards(transform.position, targetPosition, MoveSpeed * Time.deltaTime);
                     }
                     yield return null;
-                } while (pathIndex < path.Count - 1);
+                } while (pathIndex < path.Count);
             }
         }
     }

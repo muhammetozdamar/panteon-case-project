@@ -100,8 +100,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             return null;
         }
 
-
-
         internal List<GridTile> GetNeighbours(GridTile tile)
         {
             List<GridTile> neighbours = new List<GridTile>();
