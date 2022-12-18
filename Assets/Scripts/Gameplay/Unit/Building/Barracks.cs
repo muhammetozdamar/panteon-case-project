@@ -36,7 +36,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 currentProductionTimeLeft = Mathf.Clamp(currentProductionTimeLeft + Time.deltaTime, 0f, currentProductionTime);
                 if (currentProductionTimeLeft >= currentProductionTime)
                 {
-                    Debug.Log($"Producing {currentProduction.product.name}, progress {currentProductionTimeLeft / currentProductionTime}!");
                     Produce(currentProduction);
                     currentProductionTimeLeft = 0f;
                     currentProduction = null;
@@ -59,7 +58,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         {
             if (productionQueue == null) productionQueue = new Queue<ProductionSO>();
             productionQueue.Enqueue(production);
-            Debug.Log($"{production.product.name} added to the queue!");
         }
     }
 }

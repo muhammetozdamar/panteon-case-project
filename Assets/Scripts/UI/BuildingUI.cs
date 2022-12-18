@@ -6,9 +6,9 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.UI
 {
     public class BuildingUI : MonoBehaviour
     {
-        [SerializeField] private BuildingBase building;
         [SerializeField] private Button button;
         [SerializeField] private Image image;
+        [SerializeField] private BuildingBase building;
         internal BuildingBase Building => building;
         private void Awake()
         {

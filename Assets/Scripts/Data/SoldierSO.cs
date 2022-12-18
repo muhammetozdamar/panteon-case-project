@@ -6,7 +6,8 @@ namespace BaridaGames.PanteonCaseProject.Data
     public class SoldierSO : UnitSO
     {
         [SerializeField] internal float damage = 10;
+        [SerializeField] internal float attackSpeed = 10;
+        [SerializeField] internal float attackRange = 2;
         [SerializeField] internal float moveSpeed = 10;
-
     }
 }

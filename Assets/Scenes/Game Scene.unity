@@ -1176,6 +1176,9 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  unitLayerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!1 &503360447
 GameObject:
   m_ObjectHideFlags: 0

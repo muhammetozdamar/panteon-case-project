@@ -5,15 +5,14 @@ using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay
 {
-    public abstract class UnitBase : MonoBehaviour, IDamageable, IInteractable
+    public abstract class UnitBase : MonoBehaviour, IDamageable, ISelectable
     {
+        [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] internal UnitSO data;
         internal RectInt Bounds => data.bounds;
-
         internal float health;
         public virtual event EventHandler OnDamaged;
         public virtual event EventHandler OnDied;
-
         internal float Health => health;
         internal virtual void Start()
         {
@@ -31,31 +30,35 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             return false;
         }
 
+        public virtual void OnDeath()
+        {
+            OnDiedEvent(null);
+            Destroy(gameObject);
+        }
+
 
         internal virtual void OnDamagedEvent(DamageableEventArgs e)
         {
             OnDamaged?.Invoke(this, e);
         }
 
-        public virtual void OnDeath()
+        internal virtual void OnDiedEvent(DamageableEventArgs e)
         {
-            Debug.Log($"{gameObject.name}({data.name}) died!");
-            Destroy(gameObject);
+            OnDied?.Invoke(this, e);
         }
 
-        public virtual void OnMouseDown()
+
+
+        public virtual void OnSelected()
         {
             InformationPanelController.Instance.SetCurrentUnit(this);
+            spriteRenderer.color = Color.yellow;
         }
-
-        public virtual void OnMouseHold()
+        public virtual void OnDeselected()
         {
-            return;
-        }
-
-        public virtual void OnMouseUp()
-        {
-            return;
+            InformationPanelController.Instance.ResetPanel();
+            if (spriteRenderer)
+                spriteRenderer.color = Color.white;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         [SerializeField] private LayerMask interactableLayerMask;
         [SerializeField] private Camera cam;
         [SerializeField] private CameraController camController;
-        private IInteractable currentInteractable;
+        private ISelectable currentInteractable;
         private Vector3 lastMousePosition;
 
         private void Update()
@@ -16,37 +16,19 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             if (EventSystem.current.IsPointerOverGameObject()) return;
             if (Input.GetMouseButtonDown(0))
             {
+                if (currentInteractable != null)
+                {
+                    currentInteractable.OnDeselected();
+                    currentInteractable = null;
+                }
+
                 RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, interactableLayerMask);
                 if (hit)
                 {
-                    currentInteractable = hit.transform.GetComponent<IInteractable>();
-                    currentInteractable.OnMouseDown();
-                }
-                else
-                {
-                    currentInteractable = null;
+                    currentInteractable = hit.transform.GetComponent<ISelectable>();
+                    currentInteractable.OnSelected();
                 }
             }
-            else if (Input.GetMouseButton(0))
-            {
-                if (currentInteractable != null)
-                {
-                    currentInteractable.OnMouseHold();
-                }
-                else
-                {
-                    Vector2 delta = lastMousePosition - Input.mousePosition;
-                    camController.Move(delta.normalized);
-                }
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                if (currentInteractable != null)
-                {
-                    currentInteractable.OnMouseUp();
-                }
-            }
-            lastMousePosition = Input.mousePosition;
         }
     }
 }

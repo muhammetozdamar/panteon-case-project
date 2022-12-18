@@ -6,6 +6,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
     public class GridController : MonoBehaviour
     {
         public static GridController Instance;
+        public Vector2 Offset => Vector2.left * tileHalfSize + Vector2.down * tileHalfSize;
         [SerializeField] private Vector2 bounds;
         [SerializeField] private float tileHalfSize = 0.5f;
         [SerializeField] private SpriteRenderer ground = default;
@@ -51,7 +52,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             foreach (var pos in objBounds.allPositionsWithin)
             {
                 GridTile tile = grid.GetTileFromWorldPosition(position + pos);
-                print(tile.ToString());
                 tile.isOccupied = true;
             }
         }

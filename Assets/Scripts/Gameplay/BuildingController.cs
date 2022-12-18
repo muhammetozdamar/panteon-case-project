@@ -10,7 +10,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         [SerializeField] private SpriteRenderer preview;
         [SerializeField] private LayerMask groundLayerMask = default;
         private BuildingBase currentBuilding;
-        private readonly Vector2 offset = Vector2.left * 0.5f + Vector2.down * 0.5f;
         private void Update()
         {
             if (currentBuilding == null) return;
@@ -20,13 +19,14 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             if (hit.transform != null)
             {
                 Vector2 snapPosition = gridController.ConvertToGridPosition(hit.point);
-                preview.transform.position = snapPosition + (Vector2)currentBuilding.Bounds.size * 0.5f + offset;
+                preview.transform.position = snapPosition + (Vector2)currentBuilding.Bounds.size * 0.5f + GridController.Instance.Offset;
                 bool canPlace = gridController.CanPlaceObject(snapPosition, currentBuilding.Bounds);
                 preview.color = canPlace ? Color.green : Color.red;
                 if (Input.GetMouseButtonDown(0) && canPlace)
                 {
                     gridController.PlaceObject(snapPosition, currentBuilding.Bounds);
-                    Instantiate(currentBuilding, preview.transform.position, Quaternion.identity);
+                    BuildingBase building = Instantiate(currentBuilding, preview.transform.position, Quaternion.identity);
+                    building.position = snapPosition;
                     currentBuilding = null;
                     preview.gameObject.SetActive(false);
                 }

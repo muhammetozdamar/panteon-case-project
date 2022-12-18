@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6ad9858b52e1d49bb3288342bda804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 1878920753838473153}
   data: {fileID: 11400000, guid: 29800199ecd04d74384227342a3ed291, type: 2}
   spawnPoint: {fileID: 1878920752781070234}
   soldiers:

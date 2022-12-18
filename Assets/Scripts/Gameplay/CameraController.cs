@@ -9,6 +9,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
 
 
         private Vector2 direction = default;
+        private Vector3 lastMousePosition;
         private const string HORIZONTAL = "Horizontal";
         private const string VERTICAL = "Vertical";
 
@@ -17,6 +18,12 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             direction.x = Input.GetAxisRaw(HORIZONTAL);
             direction.y = Input.GetAxisRaw(VERTICAL);
             Move(direction);
+
+            if (Input.GetMouseButton(0))
+            {
+                Move((lastMousePosition - Input.mousePosition).normalized);
+            }
+            lastMousePosition = Input.mousePosition;
         }
 
         internal void Move(Vector2 direction)

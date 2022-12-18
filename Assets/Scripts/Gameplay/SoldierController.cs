@@ -1,5 +1,3 @@
-using System;
-using BaridaGames.PanteonCaseProject.Gameplay.Astar;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +7,8 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
     {
         public static SoldierController Instance;
         [SerializeField] private LayerMask groundLayerMask = default;
+        [SerializeField] private LayerMask unitLayerMask = default;
+
         private SoldierBase currentSoldier;
         private readonly Vector2 offset = Vector2.left * 0.5f + Vector2.down * 0.5f;
 
@@ -23,13 +23,21 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             if (Input.GetMouseButtonDown(1))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, groundLayerMask);
-                if (hit.transform != null)
+
+                RaycastHit2D unitHit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, unitLayerMask);
+                if (unitHit.transform != null)
                 {
-                    currentSoldier.Move(hit.point);
+                    currentSoldier.Attack(unitHit.transform.GetComponent<UnitBase>());
+                }
+                else
+                {
+                    RaycastHit2D groundHit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, groundLayerMask);
+                    if (groundHit.transform != null)
+                    {
+                        currentSoldier.Move(groundHit.point);
+                    }
                 }
             }
-
         }
 
         internal void SetCurrentSoldier(SoldierBase soldier)

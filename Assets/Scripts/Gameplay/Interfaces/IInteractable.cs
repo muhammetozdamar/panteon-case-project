@@ -1,9 +1,8 @@
 namespace BaridaGames.PanteonCaseProject.Gameplay
 {
-    public interface IInteractable
+    public interface ISelectable
     {
-        public void OnMouseDown();
-        public void OnMouseHold();
-        public void OnMouseUp();
+        public void OnSelected();
+        public void OnDeselected();
     }
 }

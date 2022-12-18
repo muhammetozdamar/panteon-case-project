@@ -8,41 +8,40 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
     public class RegularSoldier : SoldierBase
     {
         private Coroutine moveCoroutine;
+        private Coroutine attackCoroutine;
+
         private GridTile currentTile;
+        private bool isMoving = false;
+
         internal override void Start()
         {
             base.Start();
             currentTile = GridController.Instance.GetTile(transform.position);
             currentTile.isOccupied = true;
         }
-        public override void Attack(UnitBase targetUnit)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool CanAttack(UnitBase targetUnit)
-        {
-            // can add spesific checks later if needed.
-            return true;
-        }
 
         public override bool CanMove(Vector2 targetPosition)
         {
-            throw new System.NotImplementedException();
+            // can add checks if needed, but pathfinding handles the unreachable positions with fallback
+            return true;
         }
 
         public override void Move(Vector2 targetPosition)
         {
-            List<GridTile> path = GridController.Instance.GetPath(transform.position, targetPosition);
             if (moveCoroutine != null)
             {
                 StopCoroutine(moveCoroutine);
             }
+
+            List<GridTile> path = GridController.Instance.GetPath(transform.position, targetPosition);
             if (path == null) return;
+
             currentTile.isOccupied = false;
             moveCoroutine = StartCoroutine(TracePath(path));
+
             IEnumerator TracePath(List<GridTile> path)
             {
+                isMoving = true;
                 int pathIndex = 0;
                 do
                 {
@@ -69,7 +68,44 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                     }
                     yield return null;
                 } while (pathIndex < path.Count);
+                isMoving = false;
             }
+        }
+
+        public override bool CanAttack(UnitBase target)
+        {
+            // can add checks if needed, ex. cannot attack same team
+            return true;
+        }
+
+        public override void Attack(UnitBase target)
+        {
+            StopAllCoroutines();
+            StartCoroutine(Attack(target));
+            IEnumerator Attack(UnitBase target)
+            {
+                Vector2 targetPosition = target.transform.position;
+                float range = AttackRange * AttackRange;
+                if ((targetPosition - (Vector2)transform.position).sqrMagnitude > range)
+                {
+                    Move(targetPosition);
+                    yield return new WaitUntil(() => !isMoving);
+                }
+
+                WaitForSeconds attackTimer = new WaitForSeconds(1f / AttackSpeed);
+                while (target.Health > 0 && (target.transform.position - transform.position).sqrMagnitude < range)
+                {
+                    target.OnDamage(Damage);
+                    yield return attackTimer;
+                }
+            }
+        }
+        public override void OnDeath()
+        {
+            StopAllCoroutines();
+            currentTile.isOccupied = false;
+            OnDiedEvent(null);
+            Destroy(gameObject);
         }
     }
 }

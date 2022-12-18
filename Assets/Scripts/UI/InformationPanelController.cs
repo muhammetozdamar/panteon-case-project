@@ -23,12 +23,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.UI
             Instance = this;
         }
 
-        private void UpdateInformation(object sender, EventArgs e)
-        {
-            var args = (DamageableEventArgs)e;
-            healthText.text = $"{args.currentHealth}/{args.maxHealth}";
-            healthImage.fillAmount = (args.currentHealth / args.maxHealth);
-        }
+
 
         public void SetCurrentUnit(UnitBase unit)
         {
@@ -65,9 +60,31 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.UI
             if (currentDamageable != null)
             {
                 currentDamageable.OnDamaged -= UpdateInformation;
+                currentDamageable.OnDied -= ResetPanel;
+
             }
             currentDamageable = (IDamageable)unit;
             currentDamageable.OnDamaged += UpdateInformation;
+            currentDamageable.OnDied += ResetPanel;
+
+        }
+
+        private void UpdateInformation(object sender, EventArgs e)
+        {
+            var args = (DamageableEventArgs)e;
+            healthText.text = $"{args.currentHealth}/{args.maxHealth}";
+            healthImage.fillAmount = (args.currentHealth / args.maxHealth);
+        }
+
+        internal void ResetPanel(object sender, EventArgs e)
+        {
+            panel.SetActive(false);
+            if (currentDamageable != null)
+            {
+                currentDamageable.OnDamaged -= UpdateInformation;
+                currentDamageable.OnDied -= ResetPanel;
+                currentDamageable = null;
+            }
         }
 
         internal void ResetPanel()
@@ -76,11 +93,8 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.UI
             if (currentDamageable != null)
             {
                 currentDamageable.OnDamaged -= UpdateInformation;
-            }
-            int childCount = productionsContent.childCount;
-            for (int i = 0; i < childCount; i++)
-            {
-                DestroyImmediate(productionsContent.GetChild(0).gameObject);
+                currentDamageable.OnDied -= ResetPanel;
+                currentDamageable = null;
             }
         }
     }
