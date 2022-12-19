@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay
 {
@@ -19,7 +20,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             direction.y = Input.GetAxisRaw(VERTICAL);
             Move(direction);
 
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !(EventSystem.current.IsPointerOverGameObject()))
             {
                 Move((lastMousePosition - Input.mousePosition).normalized);
             }

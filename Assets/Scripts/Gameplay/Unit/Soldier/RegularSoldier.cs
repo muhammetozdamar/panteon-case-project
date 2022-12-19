@@ -93,7 +93,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 }
 
                 WaitForSeconds attackTimer = new WaitForSeconds(1f / AttackSpeed);
-                while (target.Health > 0 && (target.transform.position - transform.position).sqrMagnitude < range)
+                while (target.Health > 0 && (target.transform.position - transform.position).sqrMagnitude <= range)
                 {
                     target.OnDamage(Damage);
                     yield return attackTimer;
