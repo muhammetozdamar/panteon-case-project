@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,17 +11,17 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
         private int width = 0;
         private int height = 0;
         private Vector2 bottomLeft;
+        private Vector2 topRight;
         private Vector2 worldSize;
-        private Rect bounds;
         internal GridTile[,] Tiles => tiles;
 
         internal Grid(Vector2 worldSize, float tileHalfSize)
         {
             this.tileHalfSize = tileHalfSize;
             this.worldSize = worldSize;
-            bounds = new Rect(worldSize.x / -2, worldSize.y / -2, worldSize.x, worldSize.y);
-            tileFullSize = tileHalfSize * 2;
-            bottomLeft = Vector2.zero - Vector2.right * worldSize.x / 2 - Vector2.up * worldSize.y / 2;
+            tileFullSize = tileHalfSize * 2f;
+            bottomLeft = Vector2.left * worldSize.x * 0.5f + Vector2.down * worldSize.y * 0.5f;
+            topRight = bottomLeft * -1;
             width = Mathf.RoundToInt(worldSize.x / tileFullSize);
             height = Mathf.RoundToInt(worldSize.y / tileFullSize);
             tiles = new GridTile[width, height];
@@ -35,9 +34,10 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             }
         }
 
-        internal bool Contains(Vector2 relativePos)
+        internal bool Contains(Vector2 position)
         {
-            return bounds.Contains(relativePos);
+            return (position.x >= bottomLeft.x && position.x <= topRight.x &&
+                    position.y >= bottomLeft.y && position.y <= topRight.y);
         }
 
         private Vector2 GetWorldPositionFromGridPosition(int x, int y)
@@ -45,33 +45,34 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             return (bottomLeft + Vector2.right * (x * tileFullSize + tileHalfSize) + Vector2.up * (y * tileFullSize + tileHalfSize));
         }
 
-        private (int x, int y) GetGridPositionFromWorldPosition(Vector2 worldPosition)
+        private (int x, int y) GetGridPositionFromWorldPosition(Vector2 position)
         {
-            float percentX = (worldPosition.x + worldSize.x / 2) / worldSize.x;
-            float percentY = (worldPosition.y + worldSize.y / 2) / worldSize.y;
+            float percentX = (position.x + worldSize.x * 0.5f) / worldSize.x;
+            float percentY = (position.y + worldSize.y * 0.5f) / worldSize.y;
             percentX = Mathf.Clamp01(percentX);
             percentY = Mathf.Clamp01(percentY);
 
             int x = Mathf.RoundToInt((width - 1) * percentX);
             int y = Mathf.RoundToInt((height - 1) * percentY);
+
             return (x, y);
         }
 
-        internal GridTile GetTileFromWorldPosition(Vector2 worldPosition)
+        internal GridTile GetTileFromWorldPosition(Vector2 position)
         {
-            (int x, int y) = GetGridPositionFromWorldPosition(worldPosition);
+            (int x, int y) = GetGridPositionFromWorldPosition(position);
             return tiles[x, y];
         }
 
-        internal Vector2 GetRoundedPosition(Vector2 worldPosition)
+        internal Vector2 GetRoundedPositionFromWorldPosition(Vector2 position)
         {
-            (int x, int y) = GetGridPositionFromWorldPosition(worldPosition);
+            (int x, int y) = GetGridPositionFromWorldPosition(position);
             return GetWorldPositionFromGridPosition(x, y);
         }
 
-        public GridTile FindClosestAvailableTile(Vector2 worldPosition)
+        internal GridTile FindClosestAvailableTile(Vector2 position)
         {
-            return FindClosestAvailableTile(GetTileFromWorldPosition(worldPosition));
+            return FindClosestAvailableTile(GetTileFromWorldPosition(position));
         }
 
         internal GridTile FindClosestAvailableTile(GridTile tile)
@@ -103,7 +104,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
         internal List<GridTile> GetNeighbours(GridTile tile)
         {
             List<GridTile> neighbours = new List<GridTile>();
-
             for (int x = -1; x <= 1; x++)
             {
                 for (int y = -1; y <= 1; y++)
@@ -124,10 +124,10 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             return neighbours;
         }
 
-        internal int GetDistance(GridTile nodeA, GridTile nodeB)
+        internal int GetDistance(GridTile tile0, GridTile tile1)
         {
-            int dstX = Mathf.Abs(nodeA.xPosition - nodeB.xPosition);
-            int dstY = Mathf.Abs(nodeA.yPosition - nodeB.yPosition);
+            int dstX = Mathf.Abs(tile0.xPosition - tile1.xPosition);
+            int dstY = Mathf.Abs(tile0.yPosition - tile1.yPosition);
 
             if (dstX > dstY)
                 return 14 * dstY + 10 * (dstX - dstY);

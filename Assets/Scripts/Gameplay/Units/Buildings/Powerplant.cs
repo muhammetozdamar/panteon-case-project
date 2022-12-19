@@ -26,7 +26,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 currentProductionTimeLeft = Mathf.Clamp(currentProductionTimeLeft + Time.deltaTime, 0f, currentProductionTime);
                 if (currentProductionTimeLeft >= currentProductionTime)
                 {
-                    Debug.Log($"Producing {currentProduction.product.Name}, progress {currentProductionTimeLeft / currentProductionTime}!");
                     Produce(currentProduction);
                     currentProductionTimeLeft = 0f;
                 }
@@ -44,7 +43,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
 
         protected override void Produce(ProductionSO production)
         {
-            Debug.Log($"{production.product.Name} is produced!");
+            throw new System.NotImplementedException();
         }
     }
 }

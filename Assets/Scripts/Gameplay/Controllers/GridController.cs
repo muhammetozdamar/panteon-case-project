@@ -1,29 +1,32 @@
 using System.Collections.Generic;
+using BaridaGames.PanteonCaseProject.Utilities;
 using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
 {
-    public class GridController : MonoBehaviour
+    public class GridController : MonoBehaviourSingleton<GridController>
     {
-        public static GridController Instance;
         public Vector2 Offset => Vector2.left * tileHalfSize + Vector2.down * tileHalfSize;
         [SerializeField] private Vector2 bounds;
         [SerializeField] private float tileHalfSize = 0.5f;
         [SerializeField] private SpriteRenderer ground = default;
+        [SerializeField] private CameraController cameraController = default;
         private Grid grid;
         private Pathfinder pathfinder;
         private void Awake()
         {
-            Instance = this;
             grid = new Grid(bounds, tileHalfSize);
             pathfinder = new Pathfinder(grid);
+
             ground.size = bounds;
             ground.transform.localPosition = Vector3.zero;
             ground.GetComponent<BoxCollider2D>().size = bounds;
+
+            cameraController.SetBounds(-bounds * 0.5f, bounds);
         }
         internal Vector2 ConvertToGridPosition(Vector2 worldPosition)
         {
-            return grid.GetRoundedPosition(worldPosition);
+            return grid.GetRoundedPositionFromWorldPosition(worldPosition);
         }
 
         internal Vector2 GetClosestAvailablePoint(Vector2 worldPosition)
@@ -74,10 +77,11 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
         {
             if (grid != null)
             {
+                Vector2 size = Vector2.one * (tileHalfSize);
                 foreach (GridTile n in grid.Tiles)
                 {
                     Gizmos.color = (!n.isOccupied) ? Color.white : Color.red;
-                    Gizmos.DrawWireCube(n.worldPosition, Vector2.one * (tileHalfSize));
+                    Gizmos.DrawWireCube(n.worldPosition, size);
                 }
             }
         }

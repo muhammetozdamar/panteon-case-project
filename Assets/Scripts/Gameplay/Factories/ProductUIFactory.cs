@@ -1,8 +1,7 @@
-using BaridaGames.PanteonCaseProject.Gameplay.UI;
 using BaridaGames.PanteonCaseProject.Utilities;
 using UnityEngine;
 
-namespace BaridaGames.PanteonCaseProject.Gameplay
+namespace BaridaGames.PanteonCaseProject.Gameplay.UI
 {
     public class ProductUIFactory : PrefabFactory<ProductUI>
     {
@@ -20,4 +19,3 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         }
     }
 }
-

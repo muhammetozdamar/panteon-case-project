@@ -1259,12 +1259,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
-  bounds:
-    serializedVersion: 2
-    x: -50
-    y: -50
-    width: 100
-    height: 100
 --- !u!1 &528721447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1628,6 +1622,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683812218}
   m_CullTransparentMesh: 1
+--- !u!1 &699648843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 699648844}
+  - component: {fileID: 699648845}
+  - component: {fileID: 699648846}
+  m_Layer: 0
+  m_Name: Damage Popup Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &699648844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699648843}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &699648845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699648843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f013b59c43b80a4eb35fcf6b08afdcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 699648844}
+  prefab: {fileID: 1801095450838010636, guid: 2667bd2e290b02f4ea92fba95daa56ad, type: 3}
+  startCount: 10
+--- !u!114 &699648846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699648843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b25c951fd9a684fa484e4f583c0d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool: {fileID: 699648845}
 --- !u!1 &764824049
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,6 +1714,7 @@ MonoBehaviour:
   bounds: {x: 100, y: 100}
   tileHalfSize: 0.5
   ground: {fileID: 2142791709}
+  cameraController: {fileID: 519420033}
 --- !u!4 &764824051
 Transform:
   m_ObjectHideFlags: 0
@@ -2475,11 +2530,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569d114076abed34aaa24b68d1e31822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactableLayerMask:
+  selectableLayerMask:
     serializedVersion: 2
     m_Bits: 384
-  cam: {fileID: 519420031}
-  camController: {fileID: 519420033}
 --- !u!4 &1092769380
 Transform:
   m_ObjectHideFlags: 0
@@ -2656,6 +2709,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1217930419}
   - component: {fileID: 1217930420}
+  - component: {fileID: 1217930421}
   m_Layer: 0
   m_Name: Buildings Controller
   m_TagString: Untagged
@@ -2695,6 +2749,19 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  buildingFactory: {fileID: 1217930421}
+--- !u!114 &1217930421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217930418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7badd12d1a2c744835df63ea545a09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1286275247
 GameObject:
   m_ObjectHideFlags: 0

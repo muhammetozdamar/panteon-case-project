@@ -1,14 +1,14 @@
 using System;
 using BaridaGames.PanteonCaseProject.Data;
+using BaridaGames.PanteonCaseProject.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay.UI
 {
-    public class InformationPanelController : MonoBehaviour
+    public class InformationPanelController : MonoBehaviourSingleton<InformationPanelController>
     {
-        public static InformationPanelController Instance;
         [SerializeField] private GameObject panel = default;
         [SerializeField] private TextMeshProUGUI unitNameText = default;
         [SerializeField] private Image unitIconImage = default;
@@ -16,15 +16,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.UI
         [SerializeField] private Image healthImage = default;
         [SerializeField] private GameObject productionsRoot = default;
         [SerializeField] private RectTransform productionsContent = default;
-
         private IDamageable currentDamageable;
-        private void Awake()
-        {
-            Instance = this;
-        }
-
-
-
         public void SetCurrentUnit(UnitBase unit)
         {
             panel.SetActive(true);

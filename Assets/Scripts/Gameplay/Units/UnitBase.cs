@@ -21,6 +21,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         public virtual bool OnDamage(float value)
         {
             health -= value;
+            DamagePopupController.Instance.OnDamage(value, transform.position);
             OnDamagedEvent(new DamageableEventArgs { currentHealth = health, maxHealth = data.MaxHealth, damageAmount = value });
             if (health <= 0)
             {
@@ -36,7 +37,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             Destroy(gameObject);
         }
 
-
         internal virtual void OnDamagedEvent(DamageableEventArgs e)
         {
             OnDamaged?.Invoke(this, e);
@@ -47,13 +47,12 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
             OnDied?.Invoke(this, e);
         }
 
-
-
         public virtual void OnSelected()
         {
             InformationPanelController.Instance.SetCurrentUnit(this);
             spriteRenderer.color = Color.yellow;
         }
+
         public virtual void OnDeselected()
         {
             InformationPanelController.Instance.ResetPanel();

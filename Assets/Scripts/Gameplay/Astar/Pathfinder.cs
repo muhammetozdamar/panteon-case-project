@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
@@ -15,7 +16,6 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
         {
             this.grid = grid;
         }
-
         public List<GridTile> GetPath(Vector2 startPosition, Vector2 endPosition, PathfinderFallback fallback = PathfinderFallback.FindClosestAvailableTile)
         {
             GridTile startTile = grid.GetTileFromWorldPosition(startPosition);
@@ -38,9 +38,9 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
                 GridTile tile = openSet[0];
                 for (int i = 1; i < openSet.Count; i++)
                 {
-                    if (openSet[i].fCost < tile.fCost || openSet[i].fCost == tile.fCost)
+                    if (openSet[i].Info.fCost <= tile.Info.fCost)
                     {
-                        if (openSet[i].hCost < tile.hCost)
+                        if (openSet[i].Info.hCost < tile.Info.hCost)
                             tile = openSet[i];
                     }
                 }
@@ -60,12 +60,12 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
                         continue;
                     }
 
-                    int newCostToNeighbour = tile.gCost + grid.GetDistance(tile, neighbour);
-                    if (newCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                    int newCostToNeighbour = tile.Info.gCost + grid.GetDistance(tile, neighbour);
+                    if (newCostToNeighbour < neighbour.Info.gCost || !openSet.Contains(neighbour))
                     {
-                        neighbour.gCost = newCostToNeighbour;
-                        neighbour.hCost = grid.GetDistance(neighbour, endTile);
-                        neighbour.parent = tile;
+                        neighbour.Info.gCost = newCostToNeighbour;
+                        neighbour.Info.hCost = grid.GetDistance(neighbour, endTile);
+                        neighbour.Info.parent = tile;
 
                         if (!openSet.Contains(neighbour))
                             openSet.Add(neighbour);
@@ -75,6 +75,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             return null;
         }
 
+
         private List<GridTile> RetracePath(GridTile startNode, GridTile endNode)
         {
             List<GridTile> path = new List<GridTile>();
@@ -83,7 +84,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay.Astar
             while (currentNode != startNode)
             {
                 path.Add(currentNode);
-                currentNode = currentNode.parent;
+                currentNode = currentNode.Info.parent;
             }
             path.Reverse();
             return path;

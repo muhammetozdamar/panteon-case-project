@@ -82,14 +82,22 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         {
             StopAllCoroutines();
             StartCoroutine(Attack(target));
+
             IEnumerator Attack(UnitBase target)
             {
                 Vector2 targetPosition = target.transform.position;
                 float range = AttackRange * AttackRange;
                 if ((targetPosition - (Vector2)transform.position).sqrMagnitude > range)
                 {
-                    Move(targetPosition);
-                    yield return new WaitUntil(() => !isMoving);
+                    if (CanMove(targetPosition))
+                    {
+                        Move(targetPosition);
+                        yield return new WaitUntil(() => !isMoving);
+                    }
+                    else
+                    {
+                        yield break;
+                    }
                 }
 
                 WaitForSeconds attackTimer = new WaitForSeconds(1f / AttackSpeed);
@@ -104,8 +112,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         {
             StopAllCoroutines();
             currentTile.isOccupied = false;
-            OnDiedEvent(null);
-            Destroy(gameObject);
+            base.OnDeath();
         }
     }
 }

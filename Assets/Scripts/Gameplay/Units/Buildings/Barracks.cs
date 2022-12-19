@@ -8,20 +8,11 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
     public class Barracks : BuildingBase
     {
         [SerializeField] private Transform spawnPoint;
-        [SerializeField] private List<SoldierBase> soldiers;
+        [SerializeField] private SoldierFactory soldierFactory;
         private Queue<ProductionSO> productionQueue;
         private ProductionSO currentProduction;
         private float currentProductionTime;
         private float currentProductionTimeLeft;
-        private Dictionary<ProductionSO, SoldierBase> soldierDb;
-        private void Awake()
-        {
-            soldierDb = new Dictionary<ProductionSO, SoldierBase>();
-            foreach (ProductionSO production in Productions)
-            {
-                soldierDb.Add(production, soldiers.Find((soldier) => soldier.data == (production.product as SoldierSO)));
-            }
-        }
 
         private void Update()
         {
@@ -51,8 +42,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         protected override void Produce(ProductionSO production)
         {
             Vector2 availablePos = GridController.Instance.GetClosestAvailablePoint(spawnPoint.position);
-            SoldierBase soldier = Instantiate(soldierDb[production], availablePos, Quaternion.identity);
-            soldier.Move(availablePos);
+            soldierFactory.GetSoldier(production, availablePos);
         }
         public override void AddProductionToQueue(ProductionSO production)
         {
