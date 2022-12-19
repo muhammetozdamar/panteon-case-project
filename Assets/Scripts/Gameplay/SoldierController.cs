@@ -27,7 +27,11 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
                 RaycastHit2D unitHit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, unitLayerMask);
                 if (unitHit.transform != null)
                 {
-                    currentSoldier.Attack(unitHit.transform.GetComponent<UnitBase>());
+                    UnitBase target = unitHit.transform.GetComponent<UnitBase>();
+                    if (currentSoldier.CanAttack(target))
+                    {
+                        currentSoldier.Attack(target);
+                    }
                 }
                 else
                 {

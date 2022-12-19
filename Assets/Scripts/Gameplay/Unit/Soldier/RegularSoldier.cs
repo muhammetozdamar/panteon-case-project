@@ -75,7 +75,7 @@ namespace BaridaGames.PanteonCaseProject.Gameplay
         public override bool CanAttack(UnitBase target)
         {
             // can add checks if needed, ex. cannot attack same team
-            return true;
+            return (target != (this as UnitBase));
         }
 
         public override void Attack(UnitBase target)
